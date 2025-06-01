@@ -8,7 +8,7 @@
 #include <Arduino.h>
 
 // 蓝牙设备名称和UUID
-#define BT_DEVICE_NAME "RobotArm_ESP32"
+#define BT_DEVICE_NAME "RobotArm"
 #define SERVICE_UUID "b9c7eaa3-f8de-4f40-9ad3-4e7e49bd431a"
 #define CHAR_UUID_RX "d05182d7-e26f-4bfc-8a69-6e3efb177358"  
 #define CHAR_UUID_TX "a0c4ca34-247c-4651-86a9-bf61b28b7bff"
