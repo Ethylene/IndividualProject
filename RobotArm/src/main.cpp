@@ -2,6 +2,7 @@
 #include "movement/movement.h"
 #include "bluetooth/bluetooth.h"
 #include "command_break/command_break.h"
+//#include "anglefeedback/anglefeedback.h"
 
 
 
@@ -12,6 +13,9 @@ void setup() {
   
   // 初始化机械臂
   initRobotArm();
+
+  // 初始化电位器
+  // initanglefeedback();
 
   initBluetooth();
 }

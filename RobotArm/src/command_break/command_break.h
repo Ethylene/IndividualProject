@@ -11,7 +11,8 @@ typedef enum {
   CMD_RESET,           // reset
   CMD_STATUS,          // status
   CMD_LIMITS,          // limits/info
-  CMD_HELP             // help
+  CMD_HELP,             // help
+  //CMD_ANGLES           // angles - 显示B轴和C轴角度
 } CommandType;
 
 // 解析后的命令结构体

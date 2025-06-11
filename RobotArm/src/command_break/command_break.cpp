@@ -2,6 +2,7 @@
 #include "../movement/movement.h"
 #include "../bluetooth/bluetooth.h"
 
+
 // 主要的命令执行函数
 void executeCommand(String command, bool fromBluetooth) {
   // 解析命令
