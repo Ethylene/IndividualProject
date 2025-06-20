@@ -37,11 +37,11 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     private static final int SERVO_G_MAX = 37;
     private static final int SERVO_G_DEFAULT = 0;
 
-    // UI组件
+    // UI组件 - 移除btnBack
     private SeekBar seekbarServoA, seekbarServoB, seekbarServoC, seekbarServoG;
     private TextView tvServoAValue, tvServoBValue, tvServoCValue, tvServoGValue;
     private TextView tvServoCRange, tvLog;
-    private Button btnBack, btnReset, btnPreset1, btnPreset2, btnPreset3;
+    private Button btnReset, btnPreset1, btnPreset2, btnPreset3;
 
     // 当前角度值
     private int currentServoA = SERVO_A_DEFAULT;
@@ -67,7 +67,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     }
 
     private void initViews() {
-        // 查找UI组件
+        // 查找UI组件 - 移除btnBack查找
         seekbarServoA = findViewById(R.id.seekbar_servo_a);
         seekbarServoB = findViewById(R.id.seekbar_servo_b);
         seekbarServoC = findViewById(R.id.seekbar_servo_c);
@@ -80,7 +80,6 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         tvServoCRange = findViewById(R.id.tv_servo_c_range);
         tvLog = findViewById(R.id.tv_log);
 
-        btnBack = findViewById(R.id.btn_back);
         btnReset = findViewById(R.id.btn_reset);
         btnPreset1 = findViewById(R.id.btn_preset1);
         btnPreset2 = findViewById(R.id.btn_preset2);
@@ -90,8 +89,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         tvLog.setMovementMethod(new ScrollingMovementMethod());
         tvLog.setText("");
 
-        // 设置按钮点击事件
-        btnBack.setOnClickListener(v -> finish());
+        // 设置按钮点击事件 - 移除btnBack点击事件，使用系统返回键
         btnReset.setOnClickListener(v -> resetToDefault());
         btnPreset1.setOnClickListener(v -> setPresetPosition1());
         btnPreset2.setOnClickListener(v -> setPresetPosition2());
@@ -99,9 +97,16 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     }
 
     private void initBluetooth() {
-        bluetoothManager = new BluetoothManager(this);
+        // 使用单例BluetoothManager，保持连接状态
+        bluetoothManager = BluetoothManager.getInstance(this);
         bluetoothManager.setListener(this);
-        addLog("正在初始化蓝牙连接...");
+
+        // 检查连接状态
+        if (bluetoothManager.isConnected()) {
+            addLog("蓝牙已连接，可以发送命令");
+        } else {
+            addLog("警告: 蓝牙未连接");
+        }
     }
 
     private void initSeekBars() {
@@ -381,7 +386,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
             } else {
                 addLog("蓝牙连接断开");
                 Toast.makeText(this, "连接断开", Toast.LENGTH_SHORT).show();
-                finish(); // 连接断开时返回主界面
+                finish(); // 连接断开时返回上一界面
             }
         });
     }
@@ -404,8 +409,21 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (bluetoothManager != null) {
-            bluetoothManager.cleanup();
+        try {
+            Log.d(TAG, "onDestroy called - 保持蓝牙连接");
+            if (bluetoothManager != null) {
+                // 不调用cleanup()，保持连接状态
+                bluetoothManager.setListener(null); // 只清理监听器
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onDestroy", e);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause called - 保持蓝牙连接");
+        // 不做任何蓝牙相关的清理
     }
 }

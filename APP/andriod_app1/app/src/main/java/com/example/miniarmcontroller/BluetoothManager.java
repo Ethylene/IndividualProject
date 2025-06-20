@@ -27,6 +27,9 @@ import java.util.UUID;
 public class BluetoothManager {
     private static final String TAG = "BluetoothManager";
 
+    // 单例实例
+    private static BluetoothManager instance;
+
     // ESP32 BLE服务和特征值UUID (与ESP32代码中的保持一致)
     private static final String SERVICE_UUID = "b9c7eaa3-f8de-4f40-9ad3-4e7e49bd431a";
     private static final String CHAR_UUID_RX = "d05182d7-e26f-4bfc-8a69-6e3efb177358";
@@ -55,8 +58,9 @@ public class BluetoothManager {
         void onError(String error);
     }
 
-    public BluetoothManager(Context context) {
-        this.context = context;
+    // 单例模式构造函数 - 私有
+    private BluetoothManager(Context context) {
+        this.context = context.getApplicationContext(); // 使用ApplicationContext避免内存泄漏
         this.discoveredDevices = new ArrayList<>();
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -65,8 +69,22 @@ public class BluetoothManager {
         }
     }
 
+    // 获取单例实例
+    public static synchronized BluetoothManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new BluetoothManager(context);
+        }
+        // 更新context以防Activity切换
+        instance.context = context.getApplicationContext();
+        return instance;
+    }
+
     public void setListener(BluetoothManagerListener listener) {
         this.listener = listener;
+        // 如果使用单例，同时更新单例的listener
+        if (instance != null) {
+            instance.listener = listener;
+        }
     }
 
     public boolean isBluetoothEnabled() {
@@ -379,7 +397,7 @@ public class BluetoothManager {
     // 发送数据
     public boolean sendData(String data) {
         if (!isConnected || bluetoothGatt == null || rxCharacteristic == null) {
-            Log.e(TAG, "无法发送数据，未连接");
+            Log.e(TAG, "无法发送数据，未连接。isConnected=" + isConnected + ", bluetoothGatt=" + bluetoothGatt + ", rxCharacteristic=" + rxCharacteristic);
             return false;
         }
 

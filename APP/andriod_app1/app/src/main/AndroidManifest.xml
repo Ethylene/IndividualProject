@@ -35,24 +35,36 @@
         android:theme="@style/Theme.MiniArmController"
         tools:targetApi="31">
 
-        <!-- 主界面 -->
+        <!-- 主界面 - 蓝牙扫描和连接 -->
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- 控制模式选择界面 -->
+        <activity
+            android:name=".ControlModeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".MainActivity" />
+
         <!-- 滑杆控制界面 -->
         <activity
             android:name=".SliderControlActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ControlModeActivity" />
 
         <!-- 方向键控制界面 -->
         <activity
             android:name=".DirectionControlActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:parentActivityName=".ControlModeActivity" />
     </application>
 </manifest>

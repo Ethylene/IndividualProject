@@ -41,7 +41,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     private static final int SERVO_G_DEFAULT = 0;
 
     // UI组件
-    private Button btnBack, btnReset;
+    private Button btnReset;
     private Button btnUp, btnDown, btnLeft, btnRight, btnStop;
     private Button btnGripperOpen, btnGripperClose;
     private TextView tvCurrentA, tvCurrentB, tvCurrentC, tvCurrentG;
@@ -82,7 +82,6 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     }
 
     private void initViews() {
-        btnBack = findViewById(R.id.btn_back);
         btnReset = findViewById(R.id.btn_reset);
         btnUp = findViewById(R.id.btn_up);
         btnDown = findViewById(R.id.btn_down);
@@ -122,13 +121,19 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     }
 
     private void initBluetooth() {
-        bluetoothManager = new BluetoothManager(this);
+        // 使用单例BluetoothManager，保持连接状态
+        bluetoothManager = BluetoothManager.getInstance(this);
         bluetoothManager.setListener(this);
-        addLog("正在初始化蓝牙连接...");
+
+        // 检查连接状态
+        if (bluetoothManager.isConnected()) {
+            addLog("蓝牙已连接，可以发送命令");
+        } else {
+            addLog("警告: 蓝牙未连接");
+        }
     }
 
     private void setupButtonListeners() {
-        btnBack.setOnClickListener(v -> finish());
         btnReset.setOnClickListener(v -> resetToDefault());
         btnStop.setOnClickListener(v -> stopMovement());
         btnGripperOpen.setOnClickListener(v -> openGripper());
@@ -141,7 +146,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         setupDirectionButton(btnRight, 4);
     }
 
-    private void setupDirectionButton(Button button, int direction) {
+    private void setupDirectionButton(Button button, final int direction) {
         button.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -150,6 +155,9 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     stopMovement();
+                    break;
+                default:
+                    // 其他触摸事件不处理
                     break;
             }
             return true;
@@ -216,6 +224,10 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
             case 4: // 右 - 增加基座角度
                 currentServoA = Math.min(currentServoA + stepAngle, SERVO_A_MAX);
                 break;
+            default:
+                // 无效方向，不执行任何操作
+                Log.w(TAG, "无效的移动方向: " + direction);
+                return;
         }
 
         // 检查是否需要更新肘部范围
@@ -239,11 +251,16 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
 
     private String getDirectionName(int direction) {
         switch (direction) {
-            case 1: return "向上";
-            case 2: return "向下";
-            case 3: return "向左";
-            case 4: return "向右";
-            default: return "未知";
+            case 1:
+                return "向上";
+            case 2:
+                return "向下";
+            case 3:
+                return "向左";
+            case 4:
+                return "向右";
+            default:
+                return "未知方向";
         }
     }
 
@@ -341,11 +358,13 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
 
         // 自动滚动到底部
         tvLog.post(() -> {
-            int scrollAmount = tvLog.getLayout().getLineTop(tvLog.getLineCount()) - tvLog.getHeight();
-            if (scrollAmount > 0) {
-                tvLog.scrollTo(0, scrollAmount);
-            } else {
-                tvLog.scrollTo(0, 0);
+            if (tvLog.getLayout() != null) {
+                int scrollAmount = tvLog.getLayout().getLineTop(tvLog.getLineCount()) - tvLog.getHeight();
+                if (scrollAmount > 0) {
+                    tvLog.scrollTo(0, scrollAmount);
+                } else {
+                    tvLog.scrollTo(0, 0);
+                }
             }
         });
     }
@@ -366,11 +385,11 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         runOnUiThread(() -> {
             if (connected) {
                 addLog("蓝牙连接成功: " + deviceAddress);
-                Toast.makeText(this, "连接成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DirectionControlActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
             } else {
                 addLog("蓝牙连接断开");
-                Toast.makeText(this, "连接断开", Toast.LENGTH_SHORT).show();
-                finish(); // 连接断开时返回主界面
+                Toast.makeText(DirectionControlActivity.this, "连接断开", Toast.LENGTH_SHORT).show();
+                finish(); // 连接断开时返回上一界面
             }
         });
     }
@@ -386,7 +405,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     public void onError(String error) {
         runOnUiThread(() -> {
             addLog("错误: " + error);
-            Toast.makeText(this, "错误: " + error, Toast.LENGTH_SHORT).show();
+            Toast.makeText(DirectionControlActivity.this, "错误: " + error, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -394,8 +413,14 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     protected void onDestroy() {
         super.onDestroy();
         stopMovement(); // 确保停止所有移动
-        if (bluetoothManager != null) {
-            bluetoothManager.cleanup();
+        try {
+            Log.d(TAG, "onDestroy called - 保持蓝牙连接");
+            if (bluetoothManager != null) {
+                // 不调用cleanup()，保持连接状态
+                bluetoothManager.setListener(null); // 只清理监听器
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error in onDestroy", e);
         }
     }
 
@@ -403,5 +428,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     protected void onPause() {
         super.onPause();
         stopMovement(); // 暂停时停止移动
+        Log.d(TAG, "onPause called - 保持蓝牙连接");
+        // 不做任何蓝牙相关的清理
     }
 }
