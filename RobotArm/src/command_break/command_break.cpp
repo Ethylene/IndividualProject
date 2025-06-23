@@ -2,7 +2,6 @@
 #include "../movement/movement.h"
 #include "../bluetooth/bluetooth.h"
 
-
 // 主要的命令执行函数
 void executeCommand(String command, bool fromBluetooth) {
   // 解析命令
@@ -75,7 +74,7 @@ ParsedCommand parseCommand(String rawCommand) {
     int lastIndex = 0;
     
     for(int i = 0; i <= params.length(); i++) {
-      if(params.charAt(i) == ' ' || i == params.length()) {
+      if(i == params.length() || params.charAt(i) == ' ') {
         if(i > lastIndex) {
           String angleStr = params.substring(lastIndex, i);
           angleStr.trim();
@@ -112,6 +111,50 @@ ParsedCommand parseCommand(String rawCommand) {
   else if(rawCommand == "help") {
     result.type = CMD_HELP;
     result.isValid = true;
+  }
+  // 新增：力矩补偿相关命令
+  else if(rawCommand == "torque") {
+    result.type = CMD_TORQUE_STATUS;
+    result.isValid = true;
+  }
+  else if(rawCommand.startsWith("torque ")) {
+    String params = rawCommand.substring(7);
+    params.trim();
+    
+    if(params == "on") {
+      result.type = CMD_TORQUE_ENABLE;
+      result.angles[0] = 1;  // 使用angles[0]存储启用标志
+      result.isValid = true;
+    }
+    else if(params == "off") {
+      result.type = CMD_TORQUE_ENABLE;
+      result.angles[0] = 0;  // 禁用
+      result.isValid = true;
+    }
+    else if(params.startsWith("set ")) {
+      // torque set <threshold> <compensation> <delay>
+      result.type = CMD_TORQUE_SET;
+      
+      String setParams = params.substring(4);
+      setParams.trim();
+      
+      // 解析三个参数
+      int spaceIndex1 = setParams.indexOf(' ');
+      int spaceIndex2 = setParams.indexOf(' ', spaceIndex1 + 1);
+      
+      if(spaceIndex1 != -1 && spaceIndex2 != -1) {
+        result.angles[0] = setParams.substring(0, spaceIndex1).toInt();  // threshold
+        result.angles[1] = setParams.substring(spaceIndex1 + 1, spaceIndex2).toInt();  // compensation
+        result.angles[2] = setParams.substring(spaceIndex2 + 1).toInt();  // delay
+        result.angleCount = 3;
+        result.isValid = true;
+      } else {
+        result.errorMessage = "torque set命令格式错误，应为: torque set <阈值> <超调角度> <延时>";
+      }
+    }
+    else {
+      result.errorMessage = "torque命令格式错误，可用: torque、torque on、torque off、torque set <参数>";
+    }
   }
   else {
     result.errorMessage = "未知命令: " + rawCommand;
@@ -210,7 +253,7 @@ void executeParsedCommand(ParsedCommand cmd, bool fromBluetooth) {
     
     case CMD_HELP: {
       if(fromBluetooth) {
-        sendBluetooth("HELP: set/setall/reset/status/limits/help");
+        sendBluetooth("HELP: set/setall/reset/status/limits/help/torque");
       } else {
         Serial.println("可用命令:");
         Serial.println("set <关节ID> <角度> - 设置单个关节角度");
@@ -219,7 +262,61 @@ void executeParsedCommand(ParsedCommand cmd, bool fromBluetooth) {
         Serial.println("reset - 重置到各舵机原点位置");
         Serial.println("status - 显示当前角度");
         Serial.println("limits 或 info - 显示角度限制和原点信息");
+        Serial.println("torque - 显示力矩补偿状态");
+        Serial.println("torque on/off - 启用/禁用力矩补偿");
+        Serial.println("torque set <阈值> <超调> <延时> - 设置补偿参数");
         Serial.println("help - 显示帮助");
+      }
+      break;
+    }
+    
+    // 新增：力矩补偿命令处理
+    case CMD_TORQUE_STATUS: {
+      if(fromBluetooth) {
+        sendBluetooth("TORQUE_STATUS_OK");
+      } else {
+        printTorqueCompensationStatus();
+      }
+      break;
+    }
+    
+    case CMD_TORQUE_ENABLE: {
+      bool enable = (cmd.angles[0] == 1);
+      enableTorqueCompensation(enable);
+      
+      String response = "力矩补偿已" + String(enable ? "启用" : "禁用");
+      sendResponse(response, fromBluetooth);
+      
+      if(fromBluetooth) {
+        sendBluetooth(enable ? "TORQUE_ON" : "TORQUE_OFF");
+      }
+      break;
+    }
+    
+    case CMD_TORQUE_SET: {
+      int threshold = cmd.angles[0];
+      int compensation = cmd.angles[1];
+      int delay = cmd.angles[2];
+      
+      // 验证参数范围
+      if(threshold < 0 || threshold > 77) {
+        sendResponse("阈值必须在0-77度之间", fromBluetooth);
+        return;
+      }
+      if(compensation < 0 || compensation > 10) {
+        sendResponse("超调角度必须在0-10度之间", fromBluetooth);
+        return;
+      }
+      if(delay < 50 || delay > 500) {
+        sendResponse("延时必须在50-500ms之间", fromBluetooth);
+        return;
+      }
+      
+      setTorqueCompensationParams(threshold, compensation, delay);
+      sendResponse("力矩补偿参数已更新", fromBluetooth);
+      
+      if(fromBluetooth) {
+        sendBluetooth("TORQUE_SET_OK");
       }
       break;
     }

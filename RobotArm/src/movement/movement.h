@@ -9,9 +9,9 @@
 
 // 各舵机的原点位置
 #define DEFAULT_POS_A 90     // 舵机a原点为90度
-#define DEFAULT_POS_B 0  // 舵机b原点为0度
-#define DEFAULT_POS_C 180   // 舵机c原点为180度
-#define DEFAULT_POS_G 0   // 舵机g原点为0度
+#define DEFAULT_POS_B 0      // 舵机b原点为0度
+#define DEFAULT_POS_C 180    // 舵机c原点为180度
+#define DEFAULT_POS_G 0      // 舵机g原点为0度
 
 // 舵机引脚
 #define SERVO_PIN_A 33
@@ -29,7 +29,7 @@ typedef struct {
 // 外部变量声明
 extern JointSystem jointSystem;
 
-// 函数声明
+// 原有函数声明
 void initRobotArm();  // 初始化机械臂
 bool setJointPosition(int jointId, int angle);  // 设置单个关节位置
 bool setAllJointPositions(int a_Angle, int b_Angle, int c_Angle, int g_Angle);  // 设置所有关节位置
@@ -37,5 +37,10 @@ bool setJointPositions(int angles[]);  // 数组方式设置关节位置
 void getCurrentPositions(int positions[]);  // 获取当前位置
 void resetToDefaultPosition();  // 重置到默认位置
 void printJointLimits();  // 调试用：打印关节限制
+
+// 新增：力矩补偿相关函数声明
+void setTorqueCompensationParams(int threshold, int compensation, int delay);  // 设置补偿参数
+void enableTorqueCompensation(bool enable);  // 启用/禁用补偿
+void printTorqueCompensationStatus();  // 打印补偿状态
 
 #endif // MOVEMENT_H
