@@ -43,6 +43,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     // UI组件
     private Button btnReset;
     private Button btnUp, btnDown, btnLeft, btnRight, btnStop;
+    private Button btnElbowUp, btnElbowDown; // 新增C轴控制按钮
     private Button btnGripperOpen, btnGripperClose;
     private TextView tvCurrentA, tvCurrentB, tvCurrentC, tvCurrentG;
     private TextView tvStepValue, tvLog;
@@ -65,7 +66,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     private Handler moveHandler = new Handler();
     private Runnable moveRunnable;
     private boolean isMoving = false;
-    private int moveDirection = 0; // 0=停止, 1=上, 2=下, 3=左, 4=右
+    private int moveDirection = 0; // 0=停止, 1=B上, 2=B下, 3=A左, 4=A右, 5=C上, 6=C下
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,11 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         btnLeft = findViewById(R.id.btn_left);
         btnRight = findViewById(R.id.btn_right);
         btnStop = findViewById(R.id.btn_stop);
+
+        // 新增C轴控制按钮
+        btnElbowUp = findViewById(R.id.btn_elbow_up);
+        btnElbowDown = findViewById(R.id.btn_elbow_down);
+
         btnGripperOpen = findViewById(R.id.btn_gripper_open);
         btnGripperClose = findViewById(R.id.btn_gripper_close);
 
@@ -139,11 +145,15 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         btnGripperOpen.setOnClickListener(v -> openGripper());
         btnGripperClose.setOnClickListener(v -> closeGripper());
 
-        // 设置方向按钮的长按监听
-        setupDirectionButton(btnUp, 1);
-        setupDirectionButton(btnDown, 2);
-        setupDirectionButton(btnLeft, 3);
-        setupDirectionButton(btnRight, 4);
+        // 设置AB轴方向按钮的长按监听
+        setupDirectionButton(btnUp, 1);      // B轴向上
+        setupDirectionButton(btnDown, 2);    // B轴向下
+        setupDirectionButton(btnLeft, 3);    // A轴向左
+        setupDirectionButton(btnRight, 4);   // A轴向右
+
+        // 设置C轴方向按钮的长按监听
+        setupDirectionButton(btnElbowUp, 5);   // C轴向上
+        setupDirectionButton(btnElbowDown, 6); // C轴向下
     }
 
     private void setupDirectionButton(Button button, final int direction) {
@@ -212,17 +222,23 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         int oldC = currentServoC;
 
         switch (direction) {
-            case 1: // 上 - 增加肩部角度
-                currentServoB = Math.min(currentServoB + stepAngle, SERVO_B_MAX);
-                break;
-            case 2: // 下 - 减少肩部角度
+            case 1: // B轴向上 - 减少肩部角度（向上抬起）
                 currentServoB = Math.max(currentServoB - stepAngle, SERVO_B_MIN);
                 break;
-            case 3: // 左 - 减少基座角度
+            case 2: // B轴向下 - 增加肩部角度（向下降低）
+                currentServoB = Math.min(currentServoB + stepAngle, SERVO_B_MAX);
+                break;
+            case 3: // A轴向左 - 减少基座角度
                 currentServoA = Math.max(currentServoA - stepAngle, SERVO_A_MIN);
                 break;
-            case 4: // 右 - 增加基座角度
+            case 4: // A轴向右 - 增加基座角度
                 currentServoA = Math.min(currentServoA + stepAngle, SERVO_A_MAX);
+                break;
+            case 5: // C轴向上 - 增加肘部角度
+                currentServoC = Math.min(currentServoC + stepAngle, servoCMax);
+                break;
+            case 6: // C轴向下 - 减少肘部角度
+                currentServoC = Math.max(currentServoC - stepAngle, servoCMin);
                 break;
             default:
                 // 无效方向，不执行任何操作
@@ -252,13 +268,17 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     private String getDirectionName(int direction) {
         switch (direction) {
             case 1:
-                return "向上";
+                return "B轴向上(肩部上抬)";
             case 2:
-                return "向下";
+                return "B轴向下(肩部下降)";
             case 3:
-                return "向左";
+                return "A轴向左(基座左转)";
             case 4:
-                return "向右";
+                return "A轴向右(基座右转)";
+            case 5:
+                return "C轴向上(肘部上抬)";
+            case 6:
+                return "C轴向下(肘部下降)";
             default:
                 return "未知方向";
         }
@@ -289,7 +309,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         updateServoCRange();
         updateCurrentDisplay();
         sendAllServoCommand();
-        addLog("重置到默认位置");
+        addLog("重置到默认位置 - A:" + currentServoA + "° B:" + currentServoB + "° C:" + currentServoC + "° G:" + currentServoG + "°");
     }
 
     private void updateServoCRange() {
@@ -305,9 +325,14 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         // 调整当前肘部角度以适应新范围
         if (currentServoC < servoCMin) {
             currentServoC = servoCMin;
+            addLog("C轴角度调整到最小值: " + currentServoC + "°");
         } else if (currentServoC > servoCMax) {
             currentServoC = servoCMax;
+            addLog("C轴角度调整到最大值: " + currentServoC + "°");
         }
+
+        // 在日志中显示C轴范围更新
+        addLog("C轴范围更新: " + servoCMin + "° - " + servoCMax + "°");
     }
 
     private void updateCurrentDisplay() {

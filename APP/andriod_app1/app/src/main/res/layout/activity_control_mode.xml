@@ -7,7 +7,7 @@
     android:background="#f5f5f5">
 
     <!-- 标题 -->
-    <!--<TextView
+    <TextView
         android:id="@+id/tv_title"
         android:layout_width="380dp"
         android:layout_height="60dp"
@@ -18,7 +18,7 @@
         android:text="选择控制模式"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:textStyle="bold" />-->
+        android:textStyle="bold" />
 
     <!-- 连接状态 -->
     <LinearLayout
