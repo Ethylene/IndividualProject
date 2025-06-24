@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
 
         } catch (Exception e) {
             Log.e(TAG, "=== CRITICAL ERROR in onCreate ===", e);
-            Toast.makeText(this, "应用初始化失败: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Application initialization failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
             lvDevices.setOnItemClickListener((parent, view, position, id) -> {
                 if (position < deviceList.size() && !isConnecting) {
                     BluetoothDeviceInfo deviceInfo = deviceList.get(position);
-                    Log.d(TAG, "用户点击设备: " + deviceInfo.getName());
+                    Log.d(TAG, "User clicked device: " + deviceInfo.getName());
                     connectToDevice(deviceInfo);
                 }
             });
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
 
         } catch (Exception e) {
             Log.e(TAG, "CRITICAL ERROR in initViews", e);
-            Toast.makeText(this, "界面初始化失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Interface initialization failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
             Log.d(TAG, "initBluetooth completed successfully");
         } catch (Exception e) {
             Log.e(TAG, "ERROR in initBluetooth", e);
-            Toast.makeText(this, "蓝牙初始化失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bluetooth initialization failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -177,11 +177,11 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
             }
 
             if (!permissionsToRequest.isEmpty()) {
-                Log.d(TAG, "请求权限: " + permissionsToRequest);
+                Log.d(TAG, "Requesting permissions: " + permissionsToRequest);
                 ActivityCompat.requestPermissions(this,
                         permissionsToRequest.toArray(new String[0]), REQUEST_PERMISSIONS);
             } else {
-                Log.d(TAG, "所有权限已获取");
+                Log.d(TAG, "All permissions granted");
                 checkBluetoothEnabled();
             }
         } catch (Exception e) {
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
             } else {
-                Log.d(TAG, "蓝牙已启用");
+                Log.d(TAG, "Bluetooth enabled");
                 updateBluetoothStatus();
             }
         } catch (Exception e) {
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
             runOnUiThread(() -> {
                 if (bluetoothManager != null && bluetoothManager.isBluetoothEnabled()) {
                     if (tvBluetoothStatus != null) {
-                        tvBluetoothStatus.setText("蓝牙已启用，点击扫描查找设备");
+                        tvBluetoothStatus.setText("Bluetooth enabled, click scan to find devices");
                         tvBluetoothStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
                     }
                     if (btnScan != null) {
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
                     }
                 } else {
                     if (tvBluetoothStatus != null) {
-                        tvBluetoothStatus.setText("蓝牙未启用");
+                        tvBluetoothStatus.setText("Bluetooth not enabled");
                         tvBluetoothStatus.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                     }
                     if (btnScan != null) {
@@ -249,7 +249,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
         try {
             Log.d(TAG, "startScan called");
             if (bluetoothManager == null || !bluetoothManager.isBluetoothEnabled()) {
-                Toast.makeText(this, "请先启用蓝牙", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Please enable Bluetooth first", Toast.LENGTH_SHORT).show();
                 checkBluetoothEnabled();
                 return;
             }
@@ -264,25 +264,25 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
             }
 
             if (btnScan != null) {
-                btnScan.setText("扫描中...");
+                btnScan.setText("Scanning...");
                 btnScan.setEnabled(false);
             }
 
             if (tvBluetoothStatus != null) {
-                tvBluetoothStatus.setText("正在扫描蓝牙设备...");
+                tvBluetoothStatus.setText("Scanning for Bluetooth devices...");
             }
 
-            Log.d(TAG, "开始扫描设备");
+            Log.d(TAG, "Starting device scan");
             bluetoothManager.startScan();
         } catch (Exception e) {
             Log.e(TAG, "Error in startScan", e);
-            Toast.makeText(this, "扫描启动失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Scan failed to start: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void connectToDevice(BluetoothDeviceInfo deviceInfo) {
         try {
-            Log.d(TAG, "开始连接设备: " + deviceInfo.getName());
+            Log.d(TAG, "Starting connection to device: " + deviceInfo.getName());
             if (bluetoothManager != null && !isConnecting) {
                 isConnecting = true;
 
@@ -290,16 +290,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
                     bluetoothManager.stopScan();
                 }
 
-                Toast.makeText(this, "正在连接到 " + deviceInfo.getName() + "...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Connecting to " + deviceInfo.getName() + "...", Toast.LENGTH_SHORT).show();
 
                 // 更新状态显示
                 if (tvBluetoothStatus != null) {
-                    tvBluetoothStatus.setText("正在连接到 " + deviceInfo.getName() + "...");
+                    tvBluetoothStatus.setText("Connecting to " + deviceInfo.getName() + "...");
                     tvBluetoothStatus.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
                 }
 
                 if (btnScan != null) {
-                    btnScan.setText("连接中...");
+                    btnScan.setText("Connecting...");
                     btnScan.setEnabled(false);
                 }
 
@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
             }
         } catch (Exception e) {
             Log.e(TAG, "Error in connectToDevice", e);
-            Toast.makeText(this, "连接失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Connection failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             isConnecting = false;
         }
     }
@@ -315,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
     // BluetoothManagerListener 接口实现
     @Override
     public void onDeviceFound(BluetoothDeviceInfo device) {
-        Log.d(TAG, "发现设备: " + device.getName());
+        Log.d(TAG, "Found device: " + device.getName());
         runOnUiThread(() -> {
             try {
                 if (deviceList == null) return;
@@ -335,8 +335,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
                         deviceAdapter.notifyDataSetChanged();
                     }
                     updateEmptyListVisibility();
-                    Log.d(TAG, "添加设备到列表: " + device.getName() + " (" + device.getAddress() + ")");
-                    Log.d(TAG, "当前设备列表大小: " + deviceList.size());
+                    Log.d(TAG, "Added device to list: " + device.getName() + " (" + device.getAddress() + ")");
+                    Log.d(TAG, "Current device list size: " + deviceList.size());
                 }
             } catch (Exception e) {
                 Log.e(TAG, "Error in onDeviceFound", e);
@@ -346,15 +346,15 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
 
     @Override
     public void onScanFinished() {
-        Log.d(TAG, "扫描结束");
+        Log.d(TAG, "Scan finished");
         runOnUiThread(() -> {
             try {
                 if (btnScan != null) {
-                    btnScan.setText("扫描设备");
+                    btnScan.setText("Scan Devices");
                     btnScan.setEnabled(true);
                 }
 
-                String message = "扫描完成，发现 " + (deviceList != null ? deviceList.size() : 0) + " 个设备";
+                String message = "Scan complete, found " + (deviceList != null ? deviceList.size() : 0) + " devices";
                 if (tvBluetoothStatus != null) {
                     tvBluetoothStatus.setText(message);
                     tvBluetoothStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
@@ -363,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
                 Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
                 // 调试信息
-                Log.d(TAG, "扫描完成，设备列表:");
+                Log.d(TAG, "Scan complete, device list:");
                 if (deviceList != null) {
                     for (int i = 0; i < deviceList.size(); i++) {
                         BluetoothDeviceInfo device = deviceList.get(i);
@@ -378,25 +378,25 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
 
     @Override
     public void onConnectionStateChanged(boolean connected, String deviceAddress) {
-        Log.d(TAG, "连接状态变化: connected=" + connected + ", address=" + deviceAddress);
+        Log.d(TAG, "Connection state changed: connected=" + connected + ", address=" + deviceAddress);
         runOnUiThread(() -> {
             try {
                 isConnecting = false;
 
                 if (connected) {
-                    Toast.makeText(this, "连接成功！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Connected successfully!", Toast.LENGTH_SHORT).show();
 
                     if (tvBluetoothStatus != null) {
-                        tvBluetoothStatus.setText("已连接到设备: " + deviceAddress);
+                        tvBluetoothStatus.setText("Connected to device: " + deviceAddress);
                         tvBluetoothStatus.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
                     }
 
                     if (btnScan != null) {
-                        btnScan.setText("已连接");
+                        btnScan.setText("Connected");
                         btnScan.setEnabled(false);
                     }
 
-                    Log.d(TAG, "准备跳转到控制模式选择界面");
+                    Log.d(TAG, "Preparing to navigate to control mode selection screen");
 
                     // 连接成功后跳转到控制模式选择界面
                     Intent intent = new Intent(MainActivity.this, ControlModeActivity.class);
@@ -404,15 +404,15 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
                     startActivity(intent);
 
                 } else {
-                    Toast.makeText(this, "连接断开", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show();
 
                     if (tvBluetoothStatus != null) {
-                        tvBluetoothStatus.setText("连接断开，请重新扫描");
+                        tvBluetoothStatus.setText("Connection lost, please scan again");
                         tvBluetoothStatus.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
                     }
 
                     if (btnScan != null) {
-                        btnScan.setText("扫描设备");
+                        btnScan.setText("Scan Devices");
                         btnScan.setEnabled(true);
                     }
                 }
@@ -424,23 +424,23 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
 
     @Override
     public void onDataReceived(String data) {
-        Log.d(TAG, "收到数据: " + data);
+        Log.d(TAG, "Received data: " + data);
     }
 
     @Override
     public void onError(String error) {
-        Log.e(TAG, "蓝牙错误: " + error);
+        Log.e(TAG, "Bluetooth error: " + error);
         runOnUiThread(() -> {
             isConnecting = false;
-            Toast.makeText(this, "错误: " + error, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Error: " + error, Toast.LENGTH_LONG).show();
 
             if (tvBluetoothStatus != null) {
-                tvBluetoothStatus.setText("发生错误: " + error);
+                tvBluetoothStatus.setText("Error occurred: " + error);
                 tvBluetoothStatus.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             }
 
             if (btnScan != null) {
-                btnScan.setText("扫描设备");
+                btnScan.setText("Scan Devices");
                 btnScan.setEnabled(true);
             }
         });
@@ -455,15 +455,15 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
                     allPermissionsGranted = false;
-                    Log.e(TAG, "权限被拒绝: " + permissions[i]);
+                    Log.e(TAG, "Permission denied: " + permissions[i]);
                 }
             }
 
             if (allPermissionsGranted) {
-                Log.d(TAG, "所有权限已授予");
+                Log.d(TAG, "All permissions granted");
                 checkBluetoothEnabled();
             } else {
-                Toast.makeText(this, "需要权限才能使用蓝牙功能", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Bluetooth permissions required", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -474,12 +474,12 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
 
         if (requestCode == REQUEST_ENABLE_BT) {
             if (resultCode == RESULT_OK) {
-                Toast.makeText(this, "蓝牙已启用", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "蓝牙启用成功");
+                Toast.makeText(this, "Bluetooth enabled", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Bluetooth enabled successfully");
                 updateBluetoothStatus();
             } else {
-                Toast.makeText(this, "需要启用蓝牙才能使用", Toast.LENGTH_LONG).show();
-                Log.e(TAG, "用户拒绝启用蓝牙");
+                Toast.makeText(this, "Bluetooth required to use this app", Toast.LENGTH_LONG).show();
+                Log.e(TAG, "User denied Bluetooth enable");
             }
         }
     }
@@ -494,8 +494,8 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
 
             // 添加蓝牙诊断日志
             BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-            Log.d(TAG, "蓝牙适配器状态: " + (adapter != null ? "存在" : "不存在"));
-            Log.d(TAG, "蓝牙是否启用: " + (adapter != null && adapter.isEnabled()));
+            Log.d(TAG, "Bluetooth adapter status: " + (adapter != null ? "exists" : "not exists"));
+            Log.d(TAG, "Bluetooth enabled: " + (adapter != null && adapter.isEnabled()));
 
             updateBluetoothStatus();
         } catch (Exception e) {
@@ -507,16 +507,16 @@ public class MainActivity extends AppCompatActivity implements BluetoothManager.
     protected void onDestroy() {
         super.onDestroy();
         try {
-            Log.d(TAG, "MainActivity onDestroy - 检查是否需要断开蓝牙");
+            Log.d(TAG, "MainActivity onDestroy - checking if Bluetooth disconnection needed");
 
             // 只有在应用真正退出时才断开连接
             if (isFinishing()) {
-                Log.d(TAG, "应用退出，断开蓝牙连接");
+                Log.d(TAG, "App exiting, disconnecting Bluetooth");
                 if (bluetoothManager != null) {
                     bluetoothManager.disconnect(); // 使用现有的断开方法
                 }
             } else {
-                Log.d(TAG, "Activity切换，保持蓝牙连接");
+                Log.d(TAG, "Activity switching, maintaining Bluetooth connection");
                 if (bluetoothManager != null) {
                     bluetoothManager.setListener(null); // 只清理监听器
                 }

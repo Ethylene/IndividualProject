@@ -133,9 +133,9 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
 
         // 检查连接状态
         if (bluetoothManager.isConnected()) {
-            addLog("蓝牙已连接，可以发送命令");
+            addLog("Bluetooth connected, ready to send commands");
         } else {
-            addLog("警告: 蓝牙未连接");
+            addLog("Warning: Bluetooth not connected");
         }
     }
 
@@ -197,7 +197,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         moveHandler.post(moveRunnable);
 
         String directionName = getDirectionName(direction);
-        addLog("开始" + directionName + "移动");
+        addLog("Start " + directionName + " movement");
     }
 
     private void stopMovement() {
@@ -213,7 +213,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
             moveRunnable = null;
         }
 
-        addLog("停止移动");
+        addLog("Stop movement");
     }
 
     private void performMovement(int direction) {
@@ -242,7 +242,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
                 break;
             default:
                 // 无效方向，不执行任何操作
-                Log.w(TAG, "无效的移动方向: " + direction);
+                Log.w(TAG, "Invalid movement direction: " + direction);
                 return;
         }
 
@@ -268,19 +268,19 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     private String getDirectionName(int direction) {
         switch (direction) {
             case 1:
-                return "B轴向上(肩部上抬)";
+                return "B-axis up (shoulder raise)";
             case 2:
-                return "B轴向下(肩部下降)";
+                return "B-axis down (shoulder lower)";
             case 3:
-                return "A轴向左(基座左转)";
+                return "A-axis left (base left turn)";
             case 4:
-                return "A轴向右(基座右转)";
+                return "A-axis right (base right turn)";
             case 5:
-                return "C轴向上(肘部上抬)";
+                return "C-axis up (elbow raise)";
             case 6:
-                return "C轴向下(肘部下降)";
+                return "C-axis down (elbow lower)";
             default:
-                return "未知方向";
+                return "Unknown direction";
         }
     }
 
@@ -288,14 +288,14 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         currentServoG = SERVO_G_MAX;
         sendSingleServoCommand(3, currentServoG);
         updateCurrentDisplay();
-        addLog("张开抓手");
+        addLog("Open gripper");
     }
 
     private void closeGripper() {
         currentServoG = SERVO_G_MIN;
         sendSingleServoCommand(3, currentServoG);
         updateCurrentDisplay();
-        addLog("闭合抓手");
+        addLog("Close gripper");
     }
 
     private void resetToDefault() {
@@ -309,7 +309,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         updateServoCRange();
         updateCurrentDisplay();
         sendAllServoCommand();
-        addLog("重置到默认位置 - A:" + currentServoA + "° B:" + currentServoB + "° C:" + currentServoC + "° G:" + currentServoG + "°");
+        addLog("Reset to default position - A:" + currentServoA + "° B:" + currentServoB + "° C:" + currentServoC + "° G:" + currentServoG + "°");
     }
 
     private void updateServoCRange() {
@@ -325,14 +325,14 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         // 调整当前肘部角度以适应新范围
         if (currentServoC < servoCMin) {
             currentServoC = servoCMin;
-            addLog("C轴角度调整到最小值: " + currentServoC + "°");
+            addLog("C-axis angle adjusted to minimum: " + currentServoC + "°");
         } else if (currentServoC > servoCMax) {
             currentServoC = servoCMax;
-            addLog("C轴角度调整到最大值: " + currentServoC + "°");
+            addLog("C-axis angle adjusted to maximum: " + currentServoC + "°");
         }
 
         // 在日志中显示C轴范围更新
-        addLog("C轴范围更新: " + servoCMin + "° - " + servoCMax + "°");
+        addLog("C-axis range updated: " + servoCMin + "° - " + servoCMax + "°");
     }
 
     private void updateCurrentDisplay() {
@@ -344,7 +344,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
 
     private void sendSingleServoCommand(int servoId, int angle) {
         if (bluetoothManager == null || !bluetoothManager.isConnected()) {
-            addLog("错误: 未连接到设备");
+            addLog("Error: Not connected to device");
             return;
         }
 
@@ -352,15 +352,15 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         boolean success = bluetoothManager.sendData(command);
 
         if (success) {
-            addLog("发送: " + command);
+            addLog("Sent: " + command);
         } else {
-            addLog("发送失败: " + command);
+            addLog("Send failed: " + command);
         }
     }
 
     private void sendAllServoCommand() {
         if (bluetoothManager == null || !bluetoothManager.isConnected()) {
-            addLog("错误: 未连接到设备");
+            addLog("Error: Not connected to device");
             return;
         }
 
@@ -368,9 +368,9 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         boolean success = bluetoothManager.sendData(command);
 
         if (success) {
-            addLog("发送: " + command);
+            addLog("Sent: " + command);
         } else {
-            addLog("发送失败: " + command);
+            addLog("Send failed: " + command);
         }
     }
 
@@ -409,11 +409,11 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     public void onConnectionStateChanged(boolean connected, String deviceAddress) {
         runOnUiThread(() -> {
             if (connected) {
-                addLog("蓝牙连接成功: " + deviceAddress);
-                Toast.makeText(DirectionControlActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
+                addLog("Bluetooth connected successfully: " + deviceAddress);
+                Toast.makeText(DirectionControlActivity.this, "Connected successfully", Toast.LENGTH_SHORT).show();
             } else {
-                addLog("蓝牙连接断开");
-                Toast.makeText(DirectionControlActivity.this, "连接断开", Toast.LENGTH_SHORT).show();
+                addLog("Bluetooth connection lost");
+                Toast.makeText(DirectionControlActivity.this, "Connection lost", Toast.LENGTH_SHORT).show();
                 finish(); // 连接断开时返回上一界面
             }
         });
@@ -422,15 +422,15 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     @Override
     public void onDataReceived(String data) {
         runOnUiThread(() -> {
-            addLog("收到: " + data);
+            addLog("Received: " + data);
         });
     }
 
     @Override
     public void onError(String error) {
         runOnUiThread(() -> {
-            addLog("错误: " + error);
-            Toast.makeText(DirectionControlActivity.this, "错误: " + error, Toast.LENGTH_SHORT).show();
+            addLog("Error: " + error);
+            Toast.makeText(DirectionControlActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -439,7 +439,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         super.onDestroy();
         stopMovement(); // 确保停止所有移动
         try {
-            Log.d(TAG, "onDestroy called - 保持蓝牙连接");
+            Log.d(TAG, "onDestroy called - maintaining Bluetooth connection");
             if (bluetoothManager != null) {
                 // 不调用cleanup()，保持连接状态
                 bluetoothManager.setListener(null); // 只清理监听器
@@ -453,7 +453,7 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
     protected void onPause() {
         super.onPause();
         stopMovement(); // 暂停时停止移动
-        Log.d(TAG, "onPause called - 保持蓝牙连接");
+        Log.d(TAG, "onPause called - maintaining Bluetooth connection");
         // 不做任何蓝牙相关的清理
     }
 }

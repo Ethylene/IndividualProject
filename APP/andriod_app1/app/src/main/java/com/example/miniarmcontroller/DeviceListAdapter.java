@@ -53,7 +53,7 @@ public class DeviceListAdapter extends BaseAdapter {
         BluetoothDeviceInfo deviceInfo = devices.get(position);
         holder.tvDeviceName.setText(deviceInfo.getName());
         holder.tvDeviceAddress.setText(deviceInfo.getAddress());
-        holder.tvDeviceRssi.setText("信号强度: " + deviceInfo.getRssiString());
+        holder.tvDeviceRssi.setText("Signal Strength: " + deviceInfo.getRssiString());
 
         return convertView;
     }

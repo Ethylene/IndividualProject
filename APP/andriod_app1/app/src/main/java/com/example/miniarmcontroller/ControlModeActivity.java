@@ -32,7 +32,7 @@ public class ControlModeActivity extends AppCompatActivity {
             Log.d(TAG, "setContentView completed");
 
             deviceAddress = getIntent().getStringExtra("device_address");
-            Log.d(TAG, "获取设备地址: " + deviceAddress);
+            Log.d(TAG, "Device address: " + deviceAddress);
 
             initViews();
             Log.d(TAG, "initViews completed");
@@ -44,7 +44,7 @@ public class ControlModeActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, "=== CRITICAL ERROR in ControlModeActivity onCreate ===", e);
-            Toast.makeText(this, "控制模式界面初始化失败: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Control mode interface initialization failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
             finish();
         }
     }
@@ -68,27 +68,27 @@ public class ControlModeActivity extends AppCompatActivity {
 
             // 显示设备信息
             if (tvDeviceInfo != null && deviceAddress != null) {
-                tvDeviceInfo.setText("已连接设备: " + deviceAddress);
+                tvDeviceInfo.setText("Connected Device: " + deviceAddress);
             }
 
             // 设置按钮点击事件
             if (btnSliderControl != null) {
                 btnSliderControl.setOnClickListener(v -> {
-                    Log.d(TAG, "用户选择滑杆控制模式");
+                    Log.d(TAG, "User selected slider control mode");
                     openSliderControl();
                 });
             }
 
             if (btnDirectionControl != null) {
                 btnDirectionControl.setOnClickListener(v -> {
-                    Log.d(TAG, "用户选择方向键控制模式");
+                    Log.d(TAG, "User selected direction control mode");
                     openDirectionControl();
                 });
             }
 
             if (btnDisconnect != null) {
                 btnDisconnect.setOnClickListener(v -> {
-                    Log.d(TAG, "用户点击断开连接");
+                    Log.d(TAG, "User clicked disconnect");
                     disconnect();
                 });
             }
@@ -97,7 +97,7 @@ public class ControlModeActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             Log.e(TAG, "Error in initViews", e);
-            Toast.makeText(this, "界面初始化失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Interface initialization failed", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -119,9 +119,9 @@ public class ControlModeActivity extends AppCompatActivity {
                 @Override
                 public void onConnectionStateChanged(boolean connected, String deviceAddress) {
                     runOnUiThread(() -> {
-                        Log.d(TAG, "连接状态变化: " + connected);
+                        Log.d(TAG, "Connection state changed: " + connected);
                         if (!connected) {
-                            Toast.makeText(ControlModeActivity.this, "连接断开，返回主界面", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ControlModeActivity.this, "Connection lost, returning to main screen", Toast.LENGTH_SHORT).show();
                             finish(); // 连接断开时返回主界面
                         }
                     });
@@ -129,59 +129,59 @@ public class ControlModeActivity extends AppCompatActivity {
 
                 @Override
                 public void onDataReceived(String data) {
-                    Log.d(TAG, "收到数据: " + data);
+                    Log.d(TAG, "Received data: " + data);
                 }
 
                 @Override
                 public void onError(String error) {
                     runOnUiThread(() -> {
-                        Log.e(TAG, "蓝牙错误: " + error);
-                        Toast.makeText(ControlModeActivity.this, "错误: " + error, Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Bluetooth error: " + error);
+                        Toast.makeText(ControlModeActivity.this, "Error: " + error, Toast.LENGTH_SHORT).show();
                     });
                 }
             });
             Log.d(TAG, "initBluetooth completed successfully");
         } catch (Exception e) {
             Log.e(TAG, "Error in initBluetooth", e);
-            Toast.makeText(this, "蓝牙初始化失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Bluetooth initialization failed", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void openSliderControl() {
         try {
-            Log.d(TAG, "打开滑杆控制界面");
+            Log.d(TAG, "Opening slider control interface");
             Intent intent = new Intent(this, SliderControlActivity.class);
             intent.putExtra("device_address", deviceAddress);
             startActivity(intent);
         } catch (Exception e) {
             Log.e(TAG, "Error opening SliderControlActivity", e);
-            Toast.makeText(this, "无法打开滑杆控制界面: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot open slider control interface: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void openDirectionControl() {
         try {
-            Log.d(TAG, "打开方向键控制界面");
+            Log.d(TAG, "Opening direction control interface");
             Intent intent = new Intent(this, DirectionControlActivity.class);
             intent.putExtra("device_address", deviceAddress);
             startActivity(intent);
         } catch (Exception e) {
             Log.e(TAG, "Error opening DirectionControlActivity", e);
-            Toast.makeText(this, "无法打开方向键控制界面: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Cannot open direction control interface: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     private void disconnect() {
         try {
-            Log.d(TAG, "用户主动断开蓝牙连接");
+            Log.d(TAG, "User manually disconnecting Bluetooth");
             if (bluetoothManager != null) {
                 bluetoothManager.disconnect(); // 使用现有的断开方法
             }
-            Toast.makeText(this, "已断开连接", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Disconnected", Toast.LENGTH_SHORT).show();
             finish(); // 返回主界面
         } catch (Exception e) {
             Log.e(TAG, "Error disconnecting", e);
-            Toast.makeText(this, "断开连接失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Disconnect failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             finish(); // 即使失败也返回主界面
         }
     }
@@ -190,7 +190,7 @@ public class ControlModeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         try {
-            Log.d(TAG, "onDestroy called - 保持蓝牙连接");
+            Log.d(TAG, "onDestroy called - maintaining Bluetooth connection");
             if (bluetoothManager != null) {
                 // 不调用cleanup()，保持连接状态
                 bluetoothManager.setListener(null); // 只清理监听器

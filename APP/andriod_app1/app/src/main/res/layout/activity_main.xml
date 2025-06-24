@@ -6,19 +6,6 @@
     android:padding="16dp"
     android:background="#f5f5f5">
 
-<!-- 标题
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="机械臂蓝牙连接"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="16dp"
-        android:background="#2196F3"
-        android:textColor="@android:color/white"
-        android:layout_marginBottom="24dp" /> -->
-
     <!-- 蓝牙状态区域 -->
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +18,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="蓝牙状态"
+            android:text="Bluetooth Status"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -40,7 +27,7 @@
             android:id="@+id/tv_bluetooth_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="检查蓝牙状态中..."
+            android:text="Checking Bluetooth status..."
             android:textSize="16sp"
             android:textColor="#666666"
             android:layout_marginBottom="16dp" />
@@ -49,7 +36,7 @@
             android:id="@+id/btn_scan"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="扫描蓝牙设备"
+            android:text="Scan Bluetooth Devices"
             android:background="#4CAF50"
             android:textColor="@android:color/white"
             android:textSize="18sp"
@@ -75,14 +62,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="发现的设备"
+                android:text="Discovered Devices"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="点击设备进行连接"
+                android:text="Click device to connect"
                 android:textSize="12sp"
                 android:textColor="#666666"
                 android:textStyle="italic" />
@@ -105,7 +92,7 @@
                 android:id="@+id/tv_empty_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="暂无设备\n点击扫描按钮开始查找设备"
+                android:text="No devices found\nClick scan button to start searching"
                 android:gravity="center"
                 android:textSize="16sp"
                 android:textColor="#999999"

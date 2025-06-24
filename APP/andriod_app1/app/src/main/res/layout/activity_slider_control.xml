@@ -13,20 +13,11 @@
         android:background="#2196F3"
         android:padding="16dp">
 
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="返回"
-            android:background="#1976D2"
-            android:textColor="@android:color/white"
-            android:layout_marginRight="16dp" />
-
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="滑杆控制模式"
+            android:text="Slider Control Mode"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
@@ -36,7 +27,7 @@
             android:id="@+id/btn_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="复位"
+            android:text="Reset"
             android:background="#4CAF50"
             android:textColor="@android:color/white" />
     </LinearLayout>
@@ -71,7 +62,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="基座舵机 (0°-180°)"
+                        android:text="Base Servo (0°-180°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -111,7 +102,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="肩部舵机 (0°-77°)"
+                        android:text="Shoulder Servo (0°-77°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -152,7 +143,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="肘部舵机 (140°-180°)"
+                        android:text="Elbow Servo (140°-180°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -192,7 +183,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="抓手舵机 (0°-37°)"
+                        android:text="Gripper Servo (0°-37°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -225,7 +216,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="预设位置"
+                    android:text="Preset Positions"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp" />
@@ -240,7 +231,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="位置1"
+                        android:text="Position 1"
                         android:background="#607D8B"
                         android:textColor="@android:color/white"
                         android:layout_marginRight="4dp" />
@@ -250,7 +241,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="位置2"
+                        android:text="Position 2"
                         android:background="#795548"
                         android:textColor="@android:color/white"
                         android:layout_marginLeft="4dp"
@@ -261,7 +252,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="位置3"
+                        android:text="Position 3"
                         android:background="#009688"
                         android:textColor="@android:color/white"
                         android:layout_marginLeft="4dp" />
@@ -281,7 +272,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="通信日志"
+            android:text="Communication Log"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -294,7 +285,7 @@
                 android:id="@+id/tv_log"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="等待连接..."
+                android:text="Waiting for connection..."
                 android:textSize="12sp"
                 android:fontFamily="monospace"
                 android:background="#f5f5f5"

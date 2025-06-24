@@ -23,9 +23,9 @@ public class BluetoothDeviceInfo {
         // 尝试获取设备名称
         try {
             String deviceName = device.getName();
-            this.name = (deviceName != null && !deviceName.isEmpty()) ? deviceName : "未知设备";
+            this.name = (deviceName != null && !deviceName.isEmpty()) ? deviceName : "Unknown Device";
         } catch (SecurityException e) {
-            this.name = "未知设备";
+            this.name = "Unknown Device";
         }
     }
 
@@ -43,19 +43,19 @@ public class BluetoothDeviceInfo {
                             == PackageManager.PERMISSION_GRANTED) {
                 try {
                     String deviceName = device.getName();
-                    this.name = (deviceName != null && !deviceName.isEmpty()) ? deviceName : "未知设备";
+                    this.name = (deviceName != null && !deviceName.isEmpty()) ? deviceName : "Unknown Device";
                 } catch (Exception e) {
-                    this.name = "未知设备";
+                    this.name = "Unknown Device";
                 }
             } else {
-                this.name = "未知设备";
+                this.name = "Unknown Device";
             }
         } else {
             try {
                 String deviceName = device.getName();
-                this.name = (deviceName != null && !deviceName.isEmpty()) ? deviceName : "未知设备";
+                this.name = (deviceName != null && !deviceName.isEmpty()) ? deviceName : "Unknown Device";
             } catch (Exception e) {
-                this.name = "未知设备";
+                this.name = "Unknown Device";
             }
         }
     }

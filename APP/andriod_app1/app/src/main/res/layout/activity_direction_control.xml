@@ -17,7 +17,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="方向键控制模式"
+            android:text="Direction Control Mode"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
@@ -27,7 +27,7 @@
             android:id="@+id/btn_reset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="复位"
+            android:text="Reset"
             android:background="#4CAF50"
             android:textColor="@android:color/white" />
     </LinearLayout>
@@ -55,7 +55,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="步进角度设置"
+                    android:text="Step Angle Setting"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp" />
@@ -69,7 +69,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="步进角度: "
+                        android:text="Step Angle: "
                         android:textSize="14sp" />
 
                     <TextView
@@ -104,7 +104,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="基座 + 肩部控制"
+                    android:text="Base + Shoulder Control"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -122,7 +122,7 @@
                         android:id="@+id/btn_up"
                         android:layout_width="80dp"
                         android:layout_height="60dp"
-                        android:text="B↑\n肩上"
+                        android:text="B↑\nShoulder Up"
                         android:textSize="12sp"
                         android:background="#4CAF50"
                         android:textColor="@android:color/white"
@@ -140,7 +140,7 @@
                             android:id="@+id/btn_left"
                             android:layout_width="80dp"
                             android:layout_height="60dp"
-                            android:text="A←\n左转"
+                            android:text="A←\nLeft Turn"
                             android:textSize="12sp"
                             android:background="#2196F3"
                             android:textColor="@android:color/white"
@@ -150,7 +150,7 @@
                             android:id="@+id/btn_stop"
                             android:layout_width="80dp"
                             android:layout_height="60dp"
-                            android:text="停止"
+                            android:text="Stop"
                             android:textSize="14sp"
                             android:background="#f44336"
                             android:textColor="@android:color/white" />
@@ -159,7 +159,7 @@
                             android:id="@+id/btn_right"
                             android:layout_width="80dp"
                             android:layout_height="60dp"
-                            android:text="A→\n右转"
+                            android:text="A→\nRight Turn"
                             android:textSize="12sp"
                             android:background="#2196F3"
                             android:textColor="@android:color/white"
@@ -171,7 +171,7 @@
                         android:id="@+id/btn_down"
                         android:layout_width="80dp"
                         android:layout_height="60dp"
-                        android:text="B↓\n肩下"
+                        android:text="B↓\nShoulder Down"
                         android:textSize="12sp"
                         android:background="#4CAF50"
                         android:textColor="@android:color/white"
@@ -192,7 +192,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="肘部控制"
+                    android:text="Elbow Control"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -209,7 +209,7 @@
                         android:id="@+id/btn_elbow_up"
                         android:layout_width="100dp"
                         android:layout_height="60dp"
-                        android:text="C↑\n肘上"
+                        android:text="C↑\nElbow Up"
                         android:textSize="12sp"
                         android:background="#FF9800"
                         android:textColor="@android:color/white"
@@ -220,7 +220,7 @@
                         android:id="@+id/btn_elbow_down"
                         android:layout_width="100dp"
                         android:layout_height="60dp"
-                        android:text="C↓\n肘下"
+                        android:text="C↓\nElbow Down"
                         android:textSize="12sp"
                         android:background="#FF9800"
                         android:textColor="@android:color/white"
@@ -240,7 +240,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="抓手控制"
+                    android:text="Gripper Control"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -256,7 +256,7 @@
                         android:id="@+id/btn_gripper_open"
                         android:layout_width="120dp"
                         android:layout_height="50dp"
-                        android:text="张开抓手"
+                        android:text="Open Gripper"
                         android:textSize="14sp"
                         android:background="#9C27B0"
                         android:textColor="@android:color/white"
@@ -266,7 +266,7 @@
                         android:id="@+id/btn_gripper_close"
                         android:layout_width="120dp"
                         android:layout_height="50dp"
-                        android:text="闭合抓手"
+                        android:text="Close Gripper"
                         android:textSize="14sp"
                         android:background="#9C27B0"
                         android:textColor="@android:color/white" />
@@ -285,7 +285,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="当前角度"
+                    android:text="Current Angles"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="12dp" />
@@ -305,7 +305,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="基座(A)"
+                            android:text="Base(A)"
                             android:textSize="12sp"
                             android:textColor="#666666" />
                         <TextView
@@ -328,7 +328,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="肩部(B)"
+                            android:text="Shoulder(B)"
                             android:textSize="12sp"
                             android:textColor="#666666" />
                         <TextView
@@ -351,7 +351,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="肘部(C)"
+                            android:text="Elbow(C)"
                             android:textSize="12sp"
                             android:textColor="#666666" />
                         <TextView
@@ -374,7 +374,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="抓手(G)"
+                            android:text="Gripper(G)"
                             android:textSize="12sp"
                             android:textColor="#666666" />
                         <TextView
@@ -402,7 +402,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="通信日志"
+            android:text="Communication Log"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
@@ -415,7 +415,7 @@
                 android:id="@+id/tv_log"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="等待连接..."
+                android:text="Waiting for connection..."
                 android:textSize="12sp"
                 android:fontFamily="monospace"
                 android:background="#f5f5f5"

@@ -117,20 +117,20 @@ public class BluetoothManager {
     public void startScan() {
         if (!isBluetoothEnabled()) {
             if (listener != null) {
-                listener.onError("蓝牙未启用");
+                listener.onError("Bluetooth not enabled");
             }
             return;
         }
 
         if (!hasRequiredPermissions()) {
             if (listener != null) {
-                listener.onError("缺少必要权限");
+                listener.onError("Missing required permissions");
             }
             return;
         }
 
         if (isScanning) {
-            Log.d(TAG, "已经在扫描中");
+            Log.d(TAG, "Already scanning");
             return;
         }
 
@@ -138,9 +138,9 @@ public class BluetoothManager {
         if (bluetoothLeScanner == null) {
             bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
             if (bluetoothLeScanner == null) {
-                Log.e(TAG, "无法获取 BluetoothLeScanner");
+                Log.e(TAG, "Cannot get BluetoothLeScanner");
                 if (listener != null) {
-                    listener.onError("无法初始化蓝牙扫描器");
+                    listener.onError("Cannot initialize Bluetooth scanner");
                 }
                 return;
             }
@@ -150,7 +150,7 @@ public class BluetoothManager {
         isScanning = true;
 
         try {
-            Log.d(TAG, "开始扫描BLE设备");
+            Log.d(TAG, "Starting BLE device scan");
             bluetoothLeScanner.startScan(scanCallback);
 
             // 10秒后自动停止扫描
@@ -162,10 +162,10 @@ public class BluetoothManager {
             };
             handler.postDelayed(scanStopRunnable, 10000);
         } catch (Exception e) {
-            Log.e(TAG, "启动扫描失败: " + e.getMessage());
+            Log.e(TAG, "Failed to start scan: " + e.getMessage());
             isScanning = false;
             if (listener != null) {
-                listener.onError("启动扫描失败: " + e.getMessage());
+                listener.onError("Failed to start scan: " + e.getMessage());
             }
         }
     }
@@ -188,11 +188,11 @@ public class BluetoothManager {
             try {
                 bluetoothLeScanner.stopScan(scanCallback);
             } catch (Exception e) {
-                Log.e(TAG, "停止扫描失败: " + e.getMessage());
+                Log.e(TAG, "Failed to stop scan: " + e.getMessage());
             }
         }
 
-        Log.d(TAG, "停止扫描，发现 " + discoveredDevices.size() + " 个设备");
+        Log.d(TAG, "Stopped scan, found " + discoveredDevices.size() + " devices");
         if (listener != null) {
             listener.onScanFinished();
         }
@@ -218,7 +218,7 @@ public class BluetoothManager {
 
                 // 如果无法获取名称，使用地址作为名称
                 if (deviceName == null || deviceName.isEmpty()) {
-                    deviceName = "未知设备";
+                    deviceName = "Unknown Device";
                 }
 
                 BluetoothDeviceInfo deviceInfo = new BluetoothDeviceInfo(device, rssi);
@@ -234,38 +234,38 @@ public class BluetoothManager {
 
                 if (!exists) {
                     discoveredDevices.add(deviceInfo);
-                    Log.d(TAG, "发现设备: " + deviceName + " (" + device.getAddress() + ")");
+                    Log.d(TAG, "Found device: " + deviceName + " (" + device.getAddress() + ")");
 
                     if (listener != null) {
                         listener.onDeviceFound(deviceInfo);
                     }
                 }
             } catch (Exception e) {
-                Log.e(TAG, "处理扫描结果时出错: " + e.getMessage());
+                Log.e(TAG, "Error processing scan result: " + e.getMessage());
             }
         }
 
         @Override
         public void onScanFailed(int errorCode) {
-            Log.e(TAG, "扫描失败，错误代码: " + errorCode);
+            Log.e(TAG, "Scan failed, error code: " + errorCode);
             isScanning = false;
             if (listener != null) {
-                String errorMsg = "扫描失败: ";
+                String errorMsg = "Scan failed: ";
                 switch (errorCode) {
                     case SCAN_FAILED_ALREADY_STARTED:
-                        errorMsg += "扫描已经开始";
+                        errorMsg += "Scan already started";
                         break;
                     case SCAN_FAILED_APPLICATION_REGISTRATION_FAILED:
-                        errorMsg += "应用注册失败";
+                        errorMsg += "Application registration failed";
                         break;
                     case SCAN_FAILED_INTERNAL_ERROR:
-                        errorMsg += "内部错误";
+                        errorMsg += "Internal error";
                         break;
                     case SCAN_FAILED_FEATURE_UNSUPPORTED:
-                        errorMsg += "功能不支持";
+                        errorMsg += "Feature not supported";
                         break;
                     default:
-                        errorMsg += "未知错误 " + errorCode;
+                        errorMsg += "Unknown error " + errorCode;
                 }
                 listener.onError(errorMsg);
             }
@@ -276,7 +276,7 @@ public class BluetoothManager {
     public void connectToDevice(BluetoothDevice device) {
         if (!hasRequiredPermissions()) {
             if (listener != null) {
-                listener.onError("缺少连接权限");
+                listener.onError("Connection permission missing");
             }
             return;
         }
@@ -287,12 +287,12 @@ public class BluetoothManager {
         }
 
         try {
-            Log.d(TAG, "正在连接到设备: " + device.getAddress());
+            Log.d(TAG, "Connecting to device: " + device.getAddress());
             bluetoothGatt = device.connectGatt(context, false, gattCallback);
         } catch (Exception e) {
-            Log.e(TAG, "连接失败: " + e.getMessage());
+            Log.e(TAG, "Connection failed: " + e.getMessage());
             if (listener != null) {
-                listener.onError("连接失败: " + e.getMessage());
+                listener.onError("Connection failed: " + e.getMessage());
             }
         }
     }
@@ -302,7 +302,7 @@ public class BluetoothManager {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                Log.d(TAG, "已连接到GATT服务器");
+                Log.d(TAG, "Connected to GATT server");
                 isConnected = true;
 
                 handler.post(() -> {
@@ -315,11 +315,11 @@ public class BluetoothManager {
                 try {
                     gatt.discoverServices();
                 } catch (Exception e) {
-                    Log.e(TAG, "发现服务失败: " + e.getMessage());
+                    Log.e(TAG, "Service discovery failed: " + e.getMessage());
                 }
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                Log.d(TAG, "已断开GATT服务器连接");
+                Log.d(TAG, "Disconnected from GATT server");
                 isConnected = false;
 
                 handler.post(() -> {
@@ -333,7 +333,7 @@ public class BluetoothManager {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.d(TAG, "服务发现成功");
+                Log.d(TAG, "Service discovery successful");
 
                 BluetoothGattService service = gatt.getService(UUID.fromString(SERVICE_UUID));
                 if (service != null) {
@@ -341,28 +341,28 @@ public class BluetoothManager {
                     txCharacteristic = service.getCharacteristic(UUID.fromString(CHAR_UUID_TX));
 
                     if (rxCharacteristic != null && txCharacteristic != null) {
-                        Log.d(TAG, "找到所需的特征值");
+                        Log.d(TAG, "Found required characteristics");
 
                         // 启用通知
                         try {
                             gatt.setCharacteristicNotification(txCharacteristic, true);
                         } catch (Exception e) {
-                            Log.e(TAG, "设置通知失败: " + e.getMessage());
+                            Log.e(TAG, "Failed to set notification: " + e.getMessage());
                         }
 
                     } else {
-                        Log.e(TAG, "未找到所需的特征值");
+                        Log.e(TAG, "Required characteristics not found");
                         handler.post(() -> {
                             if (listener != null) {
-                                listener.onError("设备不兼容");
+                                listener.onError("Device not compatible");
                             }
                         });
                     }
                 } else {
-                    Log.e(TAG, "未找到所需的服务");
+                    Log.e(TAG, "Required service not found");
                     handler.post(() -> {
                         if (listener != null) {
-                            listener.onError("设备不兼容");
+                            listener.onError("Device not compatible");
                         }
                     });
                 }
@@ -374,7 +374,7 @@ public class BluetoothManager {
             if (characteristic.getUuid().equals(UUID.fromString(CHAR_UUID_TX))) {
                 byte[] data = characteristic.getValue();
                 String receivedData = new String(data);
-                Log.d(TAG, "收到数据: " + receivedData);
+                Log.d(TAG, "Received data: " + receivedData);
 
                 handler.post(() -> {
                     if (listener != null) {
@@ -387,9 +387,9 @@ public class BluetoothManager {
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.d(TAG, "写入成功");
+                Log.d(TAG, "Write successful");
             } else {
-                Log.e(TAG, "写入失败，状态: " + status);
+                Log.e(TAG, "Write failed, status: " + status);
             }
         }
     };
@@ -397,22 +397,22 @@ public class BluetoothManager {
     // 发送数据
     public boolean sendData(String data) {
         if (!isConnected || bluetoothGatt == null || rxCharacteristic == null) {
-            Log.e(TAG, "无法发送数据，未连接。isConnected=" + isConnected + ", bluetoothGatt=" + bluetoothGatt + ", rxCharacteristic=" + rxCharacteristic);
+            Log.e(TAG, "Cannot send data, not connected. isConnected=" + isConnected + ", bluetoothGatt=" + bluetoothGatt + ", rxCharacteristic=" + rxCharacteristic);
             return false;
         }
 
         if (!hasRequiredPermissions()) {
-            Log.e(TAG, "无法发送数据，缺少权限");
+            Log.e(TAG, "Cannot send data, missing permissions");
             return false;
         }
 
         try {
             rxCharacteristic.setValue(data.getBytes());
             boolean result = bluetoothGatt.writeCharacteristic(rxCharacteristic);
-            Log.d(TAG, "发送数据: " + data + ", 结果: " + result);
+            Log.d(TAG, "Send data: " + data + ", result: " + result);
             return result;
         } catch (Exception e) {
-            Log.e(TAG, "发送数据异常: " + e.getMessage());
+            Log.e(TAG, "Send data exception: " + e.getMessage());
             return false;
         }
     }
@@ -424,7 +424,7 @@ public class BluetoothManager {
                 bluetoothGatt.disconnect();
                 bluetoothGatt.close();
             } catch (Exception e) {
-                Log.e(TAG, "断开连接失败: " + e.getMessage());
+                Log.e(TAG, "Disconnect failed: " + e.getMessage());
             }
             bluetoothGatt = null;
         }

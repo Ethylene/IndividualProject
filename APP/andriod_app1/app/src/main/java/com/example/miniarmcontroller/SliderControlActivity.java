@@ -103,9 +103,9 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
 
         // 检查连接状态
         if (bluetoothManager.isConnected()) {
-            addLog("蓝牙已连接，可以发送命令");
+            addLog("Bluetooth connected, ready to send commands");
         } else {
-            addLog("警告: 蓝牙未连接");
+            addLog("Warning: Bluetooth not connected");
         }
     }
 
@@ -216,7 +216,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         seekbarServoC.setProgress(currentServoC - servoCMin);
 
         // 更新显示
-        tvServoCRange.setText("肘部舵机 (" + servoCMin + "°-" + servoCMax + "°)");
+        tvServoCRange.setText("Elbow Servo (" + servoCMin + "°-" + servoCMax + "°)");
         updateServoCDisplay();
     }
 
@@ -254,7 +254,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         updateServoGDisplay();
 
         sendAllServoCommand();
-        addLog("重置到默认位置");
+        addLog("Reset to default position");
     }
 
     // 预设位置1 (参考Android模板代码)
@@ -265,7 +265,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         currentServoG = 0;
 
         updatePositionAndSend();
-        addLog("设置到预设位置1");
+        addLog("Set to preset position 1");
     }
 
     // 预设位置2
@@ -276,7 +276,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         currentServoG = 15;
 
         updatePositionAndSend();
-        addLog("设置到预设位置2");
+        addLog("Set to preset position 2");
     }
 
     // 预设位置3
@@ -287,7 +287,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         currentServoG = 35;
 
         updatePositionAndSend();
-        addLog("设置到预设位置3");
+        addLog("Set to preset position 3");
     }
 
     private void updatePositionAndSend() {
@@ -318,7 +318,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
 
     private void sendSingleServoCommand(int servoId, int angle) {
         if (bluetoothManager == null || !bluetoothManager.isConnected()) {
-            addLog("错误: 未连接到设备");
+            addLog("Error: Not connected to device");
             return;
         }
 
@@ -326,15 +326,15 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         boolean success = bluetoothManager.sendData(command);
 
         if (success) {
-            addLog("发送: " + command);
+            addLog("Sent: " + command);
         } else {
-            addLog("发送失败: " + command);
+            addLog("Send failed: " + command);
         }
     }
 
     private void sendAllServoCommand() {
         if (bluetoothManager == null || !bluetoothManager.isConnected()) {
-            addLog("错误: 未连接到设备");
+            addLog("Error: Not connected to device");
             return;
         }
 
@@ -342,9 +342,9 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         boolean success = bluetoothManager.sendData(command);
 
         if (success) {
-            addLog("发送: " + command);
+            addLog("Sent: " + command);
         } else {
-            addLog("发送失败: " + command);
+            addLog("Send failed: " + command);
         }
     }
 
@@ -381,11 +381,11 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     public void onConnectionStateChanged(boolean connected, String deviceAddress) {
         runOnUiThread(() -> {
             if (connected) {
-                addLog("蓝牙连接成功: " + deviceAddress);
-                Toast.makeText(this, "连接成功", Toast.LENGTH_SHORT).show();
+                addLog("Bluetooth connected successfully: " + deviceAddress);
+                Toast.makeText(this, "Connected successfully", Toast.LENGTH_SHORT).show();
             } else {
-                addLog("蓝牙连接断开");
-                Toast.makeText(this, "连接断开", Toast.LENGTH_SHORT).show();
+                addLog("Bluetooth connection lost");
+                Toast.makeText(this, "Connection lost", Toast.LENGTH_SHORT).show();
                 finish(); // 连接断开时返回上一界面
             }
         });
@@ -394,15 +394,15 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     @Override
     public void onDataReceived(String data) {
         runOnUiThread(() -> {
-            addLog("收到: " + data);
+            addLog("Received: " + data);
         });
     }
 
     @Override
     public void onError(String error) {
         runOnUiThread(() -> {
-            addLog("错误: " + error);
-            Toast.makeText(this, "错误: " + error, Toast.LENGTH_SHORT).show();
+            addLog("Error: " + error);
+            Toast.makeText(this, "Error: " + error, Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -410,7 +410,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     protected void onDestroy() {
         super.onDestroy();
         try {
-            Log.d(TAG, "onDestroy called - 保持蓝牙连接");
+            Log.d(TAG, "onDestroy called - maintaining Bluetooth connection");
             if (bluetoothManager != null) {
                 // 不调用cleanup()，保持连接状态
                 bluetoothManager.setListener(null); // 只清理监听器
@@ -423,7 +423,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause called - 保持蓝牙连接");
+        Log.d(TAG, "onPause called - maintaining Bluetooth connection");
         // 不做任何蓝牙相关的清理
     }
 }
