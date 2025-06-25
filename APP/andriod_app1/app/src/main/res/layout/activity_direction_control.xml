@@ -43,236 +43,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- 步进角度控制 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@android:color/white"
-                android:padding="16dp"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Step Angle Setting"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Step Angle: "
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/tv_step_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="5°"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:textColor="#2196F3"
-                        android:layout_marginEnd="16dp" />
-
-                    <SeekBar
-                        android:id="@+id/seekbar_step"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:max="20"
-                        android:progress="4" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 基座+肩部控制区域 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@android:color/white"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Base + Shoulder Control"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- 十字控制布局 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center">
-
-                    <!-- B轴向上 -->
-                    <Button
-                        android:id="@+id/btn_up"
-                        android:layout_width="80dp"
-                        android:layout_height="60dp"
-                        android:text="B↑\nShoulder Up"
-                        android:textSize="12sp"
-                        android:background="#4CAF50"
-                        android:textColor="@android:color/white"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="8dp" />
-
-                    <!-- A轴左右 + 停止 -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_gravity="center">
-
-                        <Button
-                            android:id="@+id/btn_left"
-                            android:layout_width="80dp"
-                            android:layout_height="60dp"
-                            android:text="A←\nLeft Turn"
-                            android:textSize="12sp"
-                            android:background="#2196F3"
-                            android:textColor="@android:color/white"
-                            android:layout_marginEnd="8dp" />
-
-                        <Button
-                            android:id="@+id/btn_stop"
-                            android:layout_width="80dp"
-                            android:layout_height="60dp"
-                            android:text="Stop"
-                            android:textSize="14sp"
-                            android:background="#f44336"
-                            android:textColor="@android:color/white" />
-
-                        <Button
-                            android:id="@+id/btn_right"
-                            android:layout_width="80dp"
-                            android:layout_height="60dp"
-                            android:text="A→\nRight Turn"
-                            android:textSize="12sp"
-                            android:background="#2196F3"
-                            android:textColor="@android:color/white"
-                            android:layout_marginStart="8dp" />
-                    </LinearLayout>
-
-                    <!-- B轴向下 -->
-                    <Button
-                        android:id="@+id/btn_down"
-                        android:layout_width="80dp"
-                        android:layout_height="60dp"
-                        android:text="B↓\nShoulder Down"
-                        android:textSize="12sp"
-                        android:background="#4CAF50"
-                        android:textColor="@android:color/white"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 肘部控制区域 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@android:color/white"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Elbow Control"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_marginBottom="20dp" />
-
-                <!-- C轴控制 -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_gravity="center">
-
-                    <Button
-                        android:id="@+id/btn_elbow_up"
-                        android:layout_width="100dp"
-                        android:layout_height="60dp"
-                        android:text="C↑\nElbow Up"
-                        android:textSize="12sp"
-                        android:background="#FF9800"
-                        android:textColor="@android:color/white"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="12dp" />
-
-                    <Button
-                        android:id="@+id/btn_elbow_down"
-                        android:layout_width="100dp"
-                        android:layout_height="60dp"
-                        android:text="C↓\nElbow Down"
-                        android:textSize="12sp"
-                        android:background="#FF9800"
-                        android:textColor="@android:color/white"
-                        android:layout_gravity="center_horizontal" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- 抓手控制区域 -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@android:color/white"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Gripper Control"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:layout_marginBottom="16dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center">
-
-                    <Button
-                        android:id="@+id/btn_gripper_open"
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:text="Open Gripper"
-                        android:textSize="14sp"
-                        android:background="#9C27B0"
-                        android:textColor="@android:color/white"
-                        android:layout_marginEnd="16dp" />
-
-                    <Button
-                        android:id="@+id/btn_gripper_close"
-                        android:layout_width="120dp"
-                        android:layout_height="50dp"
-                        android:text="Close Gripper"
-                        android:textSize="14sp"
-                        android:background="#9C27B0"
-                        android:textColor="@android:color/white" />
-                </LinearLayout>
-            </LinearLayout>
-
             <!-- 当前状态显示 -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -386,6 +156,238 @@
                             android:textSize="16sp"
                             android:textColor="#9C27B0" />
                     </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+
+
+            <!-- 基座+肩部控制区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Base + Shoulder Control"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- 十字控制布局 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <!-- B轴向上 -->
+                    <Button
+                        android:id="@+id/btn_up"
+                        android:layout_width="80dp"
+                        android:layout_height="60dp"
+                        android:text="B↑"
+                        android:textSize="12sp"
+                        android:background="#4CAF50"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- A轴左右 + 停止 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+
+                        <Button
+                            android:id="@+id/btn_left"
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:text="A←"
+                            android:textSize="12sp"
+                            android:background="#2196F3"
+                            android:textColor="@android:color/white"
+                            android:layout_marginEnd="8dp" />
+
+                        <Button
+                            android:id="@+id/btn_stop"
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:text="Stop"
+                            android:textSize="14sp"
+                            android:background="#f44336"
+                            android:textColor="@android:color/white" />
+
+                        <Button
+                            android:id="@+id/btn_right"
+                            android:layout_width="80dp"
+                            android:layout_height="60dp"
+                            android:text="A→"
+                            android:textSize="12sp"
+                            android:background="#2196F3"
+                            android:textColor="@android:color/white"
+                            android:layout_marginStart="8dp" />
+                    </LinearLayout>
+
+                    <!-- B轴向下 -->
+                    <Button
+                        android:id="@+id/btn_down"
+                        android:layout_width="80dp"
+                        android:layout_height="60dp"
+                        android:text="B↓"
+                        android:textSize="12sp"
+                        android:background="#4CAF50"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 肘部控制区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Elbow Control"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp" />
+
+                <!-- C轴控制 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_elbow_up"
+                        android:layout_width="100dp"
+                        android:layout_height="60dp"
+                        android:text="C↑"
+                        android:textSize="12sp"
+                        android:background="#FF9800"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="12dp" />
+
+                    <Button
+                        android:id="@+id/btn_elbow_down"
+                        android:layout_width="100dp"
+                        android:layout_height="60dp"
+                        android:text="C↓"
+                        android:textSize="12sp"
+                        android:background="#FF9800"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="center_horizontal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 抓手控制区域 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:padding="20dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gripper Control"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_gripper_open"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:text="Open Gripper"
+                        android:textSize="10sp"
+                        android:background="#9C27B0"
+                        android:textColor="@android:color/white"
+                        android:layout_marginEnd="16dp" />
+
+                    <Button
+                        android:id="@+id/btn_gripper_close"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:text="Close Gripper"
+                        android:textSize="10sp"
+                        android:background="#9C27B0"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 步进角度控制 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/white"
+                android:padding="16dp"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Step Angle Setting"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Step Angle: "
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_step_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5°"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#2196F3"
+                        android:layout_marginEnd="16dp" />
+
+                    <SeekBar
+                        android:id="@+id/seekbar_step"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:max="20"
+                        android:progress="4" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

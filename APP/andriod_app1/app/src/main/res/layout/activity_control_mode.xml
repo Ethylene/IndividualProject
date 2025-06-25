@@ -9,20 +9,20 @@
     <!-- 标题 -->
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="380dp"
-        android:layout_height="60dp"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="24dp"
         android:background="#2196F3"
         android:gravity="center"
         android:padding="16dp"
         android:text="Select Control Mode"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold" />
 
     <!-- 连接状态 -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/white"
@@ -70,8 +70,8 @@
 
     <!-- 控制模式选择 -->
     <LinearLayout
-        android:layout_width="380dp"
-        android:layout_height="318dp"
+        android:layout_width="341dp"
+        android:layout_height="300dp"
         android:layout_weight="1"
         android:background="@android:color/white"
         android:orientation="vertical"
@@ -79,46 +79,46 @@
 
         <!-- 滑杆控制按钮 -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn_slider_control"
-                android:layout_width="match_parent"
+                android:layout_width="280dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 android:background="#FF9800"
                 android:text="Slider Control Mode"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <!-- 方向键控制按钮 -->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="280dp"
+            android:layout_height="45dp"
             android:layout_marginBottom="32dp"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn_direction_control"
-                android:layout_width="match_parent"
+                android:layout_width="280dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="8dp"
                 android:background="#9C27B0"
                 android:text="Direction Control Mode"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_disconnect"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_width="280dp"
+            android:layout_height="40dp"
             android:layout_marginTop="16dp"
             android:background="#f44336"
             android:text="Disconnect"
