@@ -18,10 +18,21 @@ extern bool bluetoothConnected;
 extern String receivedCommand;
 extern bool hasNewCommand;
 
+/******测试加入******/
+extern bool isTestCommand;
+extern unsigned long androidSendTime;
+extern unsigned long esp32ReceiveTime;
+extern String testCommand;;
+/******测试加入******/
+
 // 简单函数
 void initBluetooth();
 void sendBluetooth(String message);
 String getBluetooth();
 bool isBluetoothConnected();
+
+
+
+
 
 #endif

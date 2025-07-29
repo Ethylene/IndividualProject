@@ -8,6 +8,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//测试
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
+//测试
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
@@ -90,7 +96,13 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         tvLog.setText("");
 
         // 设置按钮点击事件 - 移除btnBack点击事件，使用系统返回键
-        btnReset.setOnClickListener(v -> resetToDefault());
+
+        //测试
+        btnReset.setOnClickListener(v ->
+                //resetToDefault());
+                startSimpleResponseTest());
+        //测试
+
         btnPreset1.setOnClickListener(v -> setPresetPosition1());
         btnPreset2.setOnClickListener(v -> setPresetPosition2());
         btnPreset3.setOnClickListener(v -> setPresetPosition3());
@@ -366,6 +378,40 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         });
     }
 
+    //测试
+    private void startSimpleResponseTest() {
+        if (!bluetoothManager.isConnected()) {
+            addLog("蓝牙未连接，无法测试");
+            return;
+        }
+
+        addLog("=== 开始响应时间测试 ===");
+
+        for (int i = 1; i <= 5; i++) {
+            final int testIndex = i;
+
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                // 记录Android发送时间
+                long androidTime = SystemClock.elapsedRealtime();
+
+                int testAngle = (testIndex % 2 == 1) ? 45 : 135;
+                String command = "set 0 " + testAngle;
+
+                addLog("=== 第" + testIndex + "次测试 ===");
+                addLog("Android发送时间: " + androidTime + " ms");
+                addLog("发送命令: " + command);
+
+                // 发送普通命令，不是特殊格式
+                bluetoothManager.sendData(command);
+
+            }, (i - 1) * 3000);
+        }
+    }
+    //测试
+
+
+
+
     // BluetoothManagerListener 接口实现
     @Override
     public void onDeviceFound(BluetoothDeviceInfo device) {
@@ -390,6 +436,11 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
             }
         });
     }
+
+
+
+
+
 
     @Override
     public void onDataReceived(String data) {

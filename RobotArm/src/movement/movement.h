@@ -43,4 +43,12 @@ void setTorqueCompensationParams(int threshold, int compensation, int delay);  /
 void enableTorqueCompensation(bool enable);  // 启用/禁用补偿
 void printTorqueCompensationStatus();  // 打印补偿状态
 
+
+//测试
+// 在文件末尾，#endif 之前添加
+extern unsigned long testStartTime;
+extern bool isTestCommand;
+extern String actualCommand;
+//测试
+
 #endif // MOVEMENT_H

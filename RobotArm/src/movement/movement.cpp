@@ -1,9 +1,18 @@
 #include "movement.h"
 #include <Arduino.h>
+#include "../bluetooth/bluetooth.h"
 
 // 全局变量
 JointSystem jointSystem;
 Ticker moveTimer;
+
+/******测试******/
+// 添加外部变量声明
+extern unsigned long testStartTime;
+extern bool isTestCommand;
+extern String actualCommand;
+/******测试******/
+
 
 // 新增：力矩补偿参数
 struct TorqueCompensation {
@@ -54,7 +63,7 @@ void startTorqueCompensation(int originalTarget) {
   
   jointSystem.targetAngles[1] = compensationTarget;
   
-  Serial.printf("🚀 B轴力矩补偿启动: %d° -> %d° -> %d°\n", 
+  Serial.printf("B轴力矩补偿启动: %d° -> %d° -> %d°\n", 
                 jointSystem.currentAngles[1], compensationTarget, originalTarget);
 }
 
@@ -69,12 +78,58 @@ void checkCompensationComplete() {
     jointSystem.targetAngles[1] = torqueComp.originalTarget;
     torqueComp.isCompensating = false;
     
-    Serial.printf("⚡ B轴补偿完成，切换到目标角度: %d°\n", torqueComp.originalTarget);
+    Serial.printf("B轴补偿完成: %d°\n", torqueComp.originalTarget);
   }
 }
 
-// 增强的舵机移动控制函数
+
 void moveJointHelper(int id, int targetAngle, int currentAngle) {
+    // 添加PWM输出时间测量
+    static bool pwmTimeMeasured[JOINT_COUNT] = {false, false, false, false};
+    
+    // 如果是测试命令且是第一次PWM输出
+    if (targetAngle != currentAngle && !pwmTimeMeasured[id] && isTestCommand) {
+        unsigned long pwmOutputTime = millis();
+        unsigned long esp32ProcessingTime = pwmOutputTime - testStartTime;
+        
+        Serial.printf("PWM输出开始时间: %lu ms\n", pwmOutputTime);
+        Serial.printf("ESP32内部处理时间: %lu ms\n", esp32ProcessingTime);
+        Serial.printf("=== 测试完成 ===\n\n");
+        
+        pwmTimeMeasured[id] = true;
+    }
+    
+    // 保持原有的移动逻辑不变
+    if (id == 1) {
+        if (currentAngle >= torqueComp.slowMoveThreshold || targetAngle >= torqueComp.slowMoveThreshold) {
+            moveSpeed.useSlowMode = true;
+        } else {
+            moveSpeed.useSlowMode = false;
+        }
+    }
+    
+    if (targetAngle > currentAngle) {
+        currentAngle++;
+        jointSystem.servos[id].write(currentAngle); // PWM输出时刻
+    } else if (targetAngle < currentAngle) {
+        currentAngle--;
+        jointSystem.servos[id].write(currentAngle); // PWM输出时刻
+    }
+    
+    jointSystem.currentAngles[id] = currentAngle;
+    
+    // B轴特殊处理的调试信息
+    if (id == 1 && torqueComp.isCompensating && currentAngle == jointSystem.targetAngles[1]) {
+        Serial.printf(" B轴到达补偿位置: %d°\n", currentAngle);
+    }
+    
+    // 重置测试标志
+    if (currentAngle == targetAngle && pwmTimeMeasured[id]) {
+        pwmTimeMeasured[id] = false;
+        isTestCommand = false;
+    }
+}
+/*void moveJointHelper(int id, int targetAngle, int currentAngle) {
   // 特殊处理B轴移动
   if (id == 1) {
     // 检查是否在重载区域，使用慢速移动
@@ -84,7 +139,7 @@ void moveJointHelper(int id, int targetAngle, int currentAngle) {
       moveSpeed.useSlowMode = false;
     }
   }
-  
+
   // 标准移动逻辑
   if (targetAngle > currentAngle) {
     currentAngle++;
@@ -98,9 +153,9 @@ void moveJointHelper(int id, int targetAngle, int currentAngle) {
   
   // B轴特殊处理：到达补偿角度时的调试信息
   if (id == 1 && torqueComp.isCompensating && currentAngle == jointSystem.targetAngles[1]) {
-    Serial.printf("📍 B轴到达补偿位置: %d°\n", currentAngle);
+    Serial.printf("B轴到达补偿位置: %d°\n", currentAngle);
   }
-}
+}*/
 
 // 增强的定时器回调函数
 void moveTimerCallback() {
@@ -187,6 +242,7 @@ void initRobotArm() {
 }
 
 // 增强的设置单个关节角度
+
 bool setJointPosition(int jointId, int angle) {
   if (jointId < 0 || jointId >= JOINT_COUNT) {
     return false;
@@ -200,7 +256,7 @@ bool setJointPosition(int jointId, int angle) {
   // B轴特殊处理：检查是否需要力矩补偿
   if (needsTorqueCompensation(jointId, angle)) {
     startTorqueCompensation(angle);
-    Serial.printf("🔧 B轴智能控制: %d° -> %d° (启用力矩补偿)\n", 
+    Serial.printf("B轴智能控制: %d° -> %d° (启用力矩补偿)\n", 
                   jointSystem.currentAngles[1], angle);
   } else {
     jointSystem.targetAngles[jointId] = angle;
@@ -208,10 +264,10 @@ bool setJointPosition(int jointId, int angle) {
     if (jointId == 1) {
       // B轴常规移动的调试信息
       if (angle > jointSystem.currentAngles[1]) {
-        Serial.printf("📉 B轴下降: %d° -> %d° (重力协助)\n", 
+        Serial.printf("B轴下降: %d° -> %d° (重力协助)\n", 
                       jointSystem.currentAngles[1], angle);
       } else {
-        Serial.printf("📈 B轴上升: %d° -> %d° (常规模式)\n", 
+        Serial.printf("B轴上升: %d° -> %d° (常规模式)\n", 
                       jointSystem.currentAngles[1], angle);
       }
     }
@@ -253,7 +309,7 @@ bool setAllJointPositions(int a_Angle, int b_Angle, int c_Angle, int g_Angle) {
   // B轴特殊处理
   if (needsTorqueCompensation(1, b_Angle)) {
     startTorqueCompensation(b_Angle);
-    Serial.printf("🔧 setall命令 - B轴启用力矩补偿: %d°\n", b_Angle);
+    Serial.printf("setall命令 - B轴启用力矩补偿: %d°\n", b_Angle);
   } else {
     jointSystem.targetAngles[1] = b_Angle;
   }
