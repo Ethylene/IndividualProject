@@ -325,14 +325,14 @@ public class DirectionControlActivity extends AppCompatActivity implements Bluet
         // 调整当前肘部角度以适应新范围
         if (currentServoC < servoCMin) {
             currentServoC = servoCMin;
-            addLog("C-axis angle adjusted to minimum: " + currentServoC + "°");
+            addLog("Servo C adjusted to minimum: " + currentServoC + "°");
         } else if (currentServoC > servoCMax) {
             currentServoC = servoCMax;
-            addLog("C-axis angle adjusted to maximum: " + currentServoC + "°");
+            addLog("Servo C adjusted to maximum: " + currentServoC + "°");
         }
 
         // 在日志中显示C轴范围更新
-        addLog("C-axis range updated: " + servoCMin + "° - " + servoCMax + "°");
+        addLog("Servo C range updated: " + servoCMin + "° - " + servoCMax + "°");
     }
 
     private void updateCurrentDisplay() {

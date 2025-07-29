@@ -62,7 +62,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Base Servo (0°-180°)"
+                        android:text="Servo A (0°-180°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -102,7 +102,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Shoulder Servo (0°-80°)"
+                        android:text="Servo B (0°-80°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -143,7 +143,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Elbow Servo (140°-180°)"
+                        android:text="Servo C (140°-180°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -183,7 +183,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Gripper Servo (0°-37.5°)"
+                        android:text="Gripper (0°-37°)"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 

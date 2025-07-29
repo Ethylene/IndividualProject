@@ -216,7 +216,7 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
         seekbarServoC.setProgress(currentServoC - servoCMin);
 
         // 更新显示
-        tvServoCRange.setText("Elbow Servo (" + servoCMin + "°-" + servoCMax + "°)");
+        tvServoCRange.setText("Servo C (" + servoCMin + "°-" + servoCMax + "°)");
         updateServoCDisplay();
     }
 
