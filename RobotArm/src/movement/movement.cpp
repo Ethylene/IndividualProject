@@ -54,7 +54,7 @@ void startTorqueCompensation(int originalTarget) {
   
   jointSystem.targetAngles[1] = compensationTarget;
   
-  Serial.printf("🚀 B轴力矩补偿启动: %d° -> %d° -> %d°\n", 
+  Serial.printf("B轴力矩补偿启动: %d° -> %d° -> %d°\n", 
                 jointSystem.currentAngles[1], compensationTarget, originalTarget);
 }
 
@@ -69,7 +69,7 @@ void checkCompensationComplete() {
     jointSystem.targetAngles[1] = torqueComp.originalTarget;
     torqueComp.isCompensating = false;
     
-    Serial.printf("⚡ B轴补偿完成，切换到目标角度: %d°\n", torqueComp.originalTarget);
+    Serial.printf("B轴补偿完成，切换到目标角度: %d°\n", torqueComp.originalTarget);
   }
 }
 
@@ -98,7 +98,7 @@ void moveJointHelper(int id, int targetAngle, int currentAngle) {
   
   // B轴特殊处理：到达补偿角度时的调试信息
   if (id == 1 && torqueComp.isCompensating && currentAngle == jointSystem.targetAngles[1]) {
-    Serial.printf("📍 B轴到达补偿位置: %d°\n", currentAngle);
+    Serial.printf("B轴到达补偿位置: %d°\n", currentAngle);
   }
 }
 
@@ -200,7 +200,7 @@ bool setJointPosition(int jointId, int angle) {
   // B轴特殊处理：检查是否需要力矩补偿
   if (needsTorqueCompensation(jointId, angle)) {
     startTorqueCompensation(angle);
-    Serial.printf("🔧 B轴智能控制: %d° -> %d° (启用力矩补偿)\n", 
+    Serial.printf("B轴智能控制: %d° -> %d° (启用力矩补偿)\n", 
                   jointSystem.currentAngles[1], angle);
   } else {
     jointSystem.targetAngles[jointId] = angle;
@@ -208,10 +208,10 @@ bool setJointPosition(int jointId, int angle) {
     if (jointId == 1) {
       // B轴常规移动的调试信息
       if (angle > jointSystem.currentAngles[1]) {
-        Serial.printf("📉 B轴下降: %d° -> %d° (重力协助)\n", 
+        Serial.printf("B轴下降: %d° -> %d° (重力协助)\n", 
                       jointSystem.currentAngles[1], angle);
       } else {
-        Serial.printf("📈 B轴上升: %d° -> %d° (常规模式)\n", 
+        Serial.printf("B轴上升: %d° -> %d° (常规模式)\n", 
                       jointSystem.currentAngles[1], angle);
       }
     }
@@ -253,7 +253,7 @@ bool setAllJointPositions(int a_Angle, int b_Angle, int c_Angle, int g_Angle) {
   // B轴特殊处理
   if (needsTorqueCompensation(1, b_Angle)) {
     startTorqueCompensation(b_Angle);
-    Serial.printf("🔧 setall命令 - B轴启用力矩补偿: %d°\n", b_Angle);
+    Serial.printf("setall命令 - B轴启用力矩补偿: %d°\n", b_Angle);
   } else {
     jointSystem.targetAngles[1] = b_Angle;
   }
