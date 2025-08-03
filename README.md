@@ -1,2 +1,5 @@
 # IndividualProject
-安卓控制机械臂via低功耗蓝牙
+Android App control robotic arm via BLE
+
+Robotic Arm file is ESP32 control code
+Android
