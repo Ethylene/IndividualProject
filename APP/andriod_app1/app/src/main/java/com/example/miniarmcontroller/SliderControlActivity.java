@@ -259,10 +259,10 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
 
     // 预设位置1 (参考Android模板代码)
     private void setPresetPosition1() {
-        currentServoA = 130;
-        currentServoB = 50;
-        currentServoC = 130;
-        currentServoG = 0;
+        currentServoA = 138;
+        currentServoB = 62;
+        currentServoC = 124;
+        currentServoG = 37;
 
         updatePositionAndSend();
         addLog("Set to preset position 1");
@@ -270,10 +270,10 @@ public class SliderControlActivity extends AppCompatActivity implements Bluetoot
 
     // 预设位置2
     private void setPresetPosition2() {
-        currentServoA = 100;
-        currentServoB = 60;
-        currentServoC = 120;
-        currentServoG = 15;
+        currentServoA = 33;
+        currentServoB = 62;
+        currentServoC = 124;
+        currentServoG = 0;
 
         updatePositionAndSend();
         addLog("Set to preset position 2");
